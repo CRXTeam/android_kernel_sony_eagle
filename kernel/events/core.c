@@ -1275,17 +1275,6 @@ static void perf_remove_from_context(struct perf_event *event, bool detach_group
 
 	lockdep_assert_held(&ctx->mutex);
 
-	if (!task) {
-		/*
-		 * Per cpu events are removed via an smp call
-		 */
-		ret = cpu_function_call(event->cpu, __perf_remove_from_context,
-					event);
-		if (ret == -ENXIO)
-			perf_retry_remove(event);
-		return;
-	}
-
 retry:
 	if (!task_function_call(task, __perf_remove_from_context, &re))
 		return;
