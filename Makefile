@@ -2,7 +2,7 @@ VERSION = 3
 PATCHLEVEL = 4
 SUBLEVEL = 91
 EXTRAVERSION =
-NAME = Saber-toothed Squirrel
+NAME = Crystal_Kernel
 
 # *DOCUMENTATION*
 # To see a list of typical targets execute "make help"
