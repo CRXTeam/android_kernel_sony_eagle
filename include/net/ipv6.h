@@ -421,11 +421,6 @@ static inline u32 __ipv6_addr_jhash(const struct in6_addr *a, const u32 initval)
 			    initval);
 }
 
-static inline u32 ipv6_addr_jhash(const struct in6_addr *a)
-{
-	return __ipv6_addr_jhash(a, ipv6_hash_secret);
-}
-
 static inline int ipv6_addr_any(const struct in6_addr *a)
 {
 	return (a->s6_addr32[0] | a->s6_addr32[1] |
