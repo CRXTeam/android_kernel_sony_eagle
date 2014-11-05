@@ -70,23 +70,50 @@
 
 	memory {
 		secure_mem: secure_region {
-			linux,contiguous-region;
+			linux,reserve-contiguous-region;
 			reg = <0 0xFC00000>;
 			label = "secure_mem";
 		};
 
 		adsp_mem: adsp_region {
-			linux,contiguous-region;
+			linux,reserve-contiguous-region;
 			reg = <0 0x3F00000>;
 			label = "adsp_mem";
 		};
 
 		qsecom_mem: qsecom_region {
-			linux,contiguous-region;
+			linux,reserve-contiguous-region;
 			reg = <0 0x1100000>;
 			label = "qseecom_mem";
 		};
 
+		fb_mem: fb_region {
+			linux,reserve-reserve-contiguous-region;
+			reg = <0 0x800000>;
+			label = "fb_mem";
+		};
+
+		audio_mem: audio_region {
+			linux,reserve-contiguous-region;
+			linux,reserve-region;
+			reg = <0 0x614000>;
+			label = "audio_mem";
+		};
+
+		peripheral_mem: peripheral_region@5d00000 {
+			linux,reserve-contiguous-region;
+			linux,reserve-region;
+			linux,remove-completely;
+			reg = <0x5d00000 0xa200000>;
+			label = "peripheral_mem";
+		};
+
+		external_image_mem: external_image_region@fa00000 {
+			linux,reserve-contiguous-region;
+			linux,reserve-region;
+			linux,remove-completely;
+			reg = <0xfa00000 0x500000>;
+		};
 	};
 
 	soc: soc { };
@@ -1875,10 +1902,6 @@
 
 	qcom,msm-adsp-sensors {
 		compatible = "qcom,msm-adsp-sensors";
-		qcom,src-id = <11>;
-		qcom,dst-id = <604>;
-		qcom,ab = <32505856>;
-		qcom,ib = <32505856>;
 	};
 
 	qcom,mss@fc880000 {

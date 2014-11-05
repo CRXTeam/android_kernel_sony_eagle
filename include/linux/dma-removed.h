@@ -1,4 +1,5 @@
-/* Copyright (c) 2013-2014, The Linux Foundation. All rights reserved.
+/*
+ * Copyright (c) 2013-2014, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -10,13 +11,6 @@
  * GNU General Public License for more details.
  */
 
-&soc {
-	qcom,ion {
-		qcom,ion-heap@23 { /* OTHER PIL HEAP */
-			compatible = "qcom,msm-ion-reserve";
-			reg = <23>;
-			linux,contiguous-region = <&adsp_venus_mem>;
-			qcom,ion-heap-type = "DMA";
-		};
-	};
-};
+#include <linux/dma-mapping.h>
+
+extern struct dma_map_ops removed_dma_ops;
