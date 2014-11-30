@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -70,50 +70,23 @@
 
 	memory {
 		secure_mem: secure_region {
-			linux,reserve-contiguous-region;
+			linux,contiguous-region;
 			reg = <0 0xFC00000>;
 			label = "secure_mem";
 		};
 
 		adsp_mem: adsp_region {
-			linux,reserve-contiguous-region;
+			linux,contiguous-region;
 			reg = <0 0x3F00000>;
 			label = "adsp_mem";
 		};
 
 		qsecom_mem: qsecom_region {
-			linux,reserve-contiguous-region;
+			linux,contiguous-region;
 			reg = <0 0x1100000>;
 			label = "qseecom_mem";
 		};
 
-		fb_mem: fb_region {
-			linux,reserve-reserve-contiguous-region;
-			reg = <0 0x800000>;
-			label = "fb_mem";
-		};
-
-		audio_mem: audio_region {
-			linux,reserve-contiguous-region;
-			linux,reserve-region;
-			reg = <0 0x614000>;
-			label = "audio_mem";
-		};
-
-		peripheral_mem: peripheral_region@5d00000 {
-			linux,reserve-contiguous-region;
-			linux,reserve-region;
-			linux,remove-completely;
-			reg = <0x5d00000 0xa200000>;
-			label = "peripheral_mem";
-		};
-
-		external_image_mem: external_image_region@fa00000 {
-			linux,reserve-contiguous-region;
-			linux,reserve-region;
-			linux,remove-completely;
-			reg = <0xfa00000 0x500000>;
-		};
 	};
 
 	soc: soc { };
@@ -362,7 +335,7 @@
 		qcom,bus-speed-mode = "HS200_1p8v", "DDR_1p8v";
 
 		qcom,msm-bus,name = "sdcc1";
-		qcom,msm-bus,num-cases = <8>;
+		qcom,msm-bus,num-cases = <9>;
 		qcom,msm-bus,num-paths = <1>;
 		qcom,msm-bus,vectors-KBps = <78 512 0 0>, /* No vote */
 				<78 512 1600 3200>,    /* 400 KB/s*/
@@ -371,8 +344,11 @@
 				<78 512 200000 400000>, /* 50 MB/s */
 				<78 512 400000 800000>, /* 100 MB/s */
 				<78 512 800000 1600000>, /* 200 MB/s */
+				<78 512 800000 1600000>, /* 400 MB/s */
 				<78 512 2048000 4096000>; /* Max. bandwidth */
-		qcom,bus-bw-vectors-bps = <0 400000 20000000 25000000 50000000 100000000 200000000 4294967295>;
+		qcom,bus-bw-vectors-bps = <0 400000 20000000 25000000 50000000
+						100000000 200000000 400000000
+						4294967295>;
 		qcom,dat1-mpm-int = <42>;
 		status = "disable";
 	};
@@ -525,7 +501,7 @@
 		qcom,cpu-dma-latency-us = <200>;
 
 		qcom,msm-bus,name = "sdhc1";
-		qcom,msm-bus,num-cases = <8>;
+		qcom,msm-bus,num-cases = <9>;
 		qcom,msm-bus,num-paths = <1>;
 		qcom,msm-bus,vectors-KBps = <78 512 0 0>, /* No vote */
 				<78 512 1600 3200>,    /* 400 KB/s*/
@@ -534,8 +510,11 @@
 				<78 512 200000 400000>, /* 50 MB/s */
 				<78 512 400000 800000>, /* 100 MB/s */
 				<78 512 800000 1600000>, /* 200 MB/s */
+				<78 512 800000 1600000>, /* 400 MB/s */
 				<78 512 2048000 4096000>; /* Max. bandwidth */
-		qcom,bus-bw-vectors-bps = <0 400000 20000000 25000000 50000000 100000000 200000000 4294967295>;
+		qcom,bus-bw-vectors-bps = <0 400000 20000000 25000000 50000000
+						100000000 200000000 400000000
+						4294967295>;
 		status = "disable";
 	};
 
@@ -1850,6 +1829,11 @@
 			compatible = "qcom,msm-dai-q6-dev";
 			qcom,msm-dai-q6-dev-id = <32773>;
 		};
+
+		qcom,msm-dai-q6-incall-music-2-rx {
+			compatible = "qcom,msm-dai-q6-dev";
+			qcom,msm-dai-q6-dev-id = <32770>;
+		};
 	};
 
 	qcom,msm-pri-auxpcm {
@@ -2462,6 +2446,13 @@
 			qcom,smdtty-port-name = "LOOPBACK";
 			qcom,smdtty-dev-name = "LOOPBACK_TTY";
 		};
+	};
+
+	qcom,avtimer {
+		compatible = "qcom,avtimer";
+		reg = <0xfe053008 0x4>,
+			<0xfe05300c 0x4>;
+		reg-names = "avtimer_lsb_addr", "avtimer_msb_addr";
 	};
 };
 

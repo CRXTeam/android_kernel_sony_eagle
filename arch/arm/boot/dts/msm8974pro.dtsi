@@ -22,42 +22,6 @@
 /include/ "msm8974pro-pm.dtsi"
 /include/ "msm8974pro-ion.dtsi"
 
-/ {
-        memory {
-
-
-		alt_peripheral_mem: peripheral_region@5a00000 {
-			linux,reserve-contiguous-region;
-			linux,reserve-region;
-			linux,remove-completely;
-			reg = <0x5a00000 0x2100000>;
-			label = "peripheral_mem";
-		};
-
-		tz_apps@0x7b00000 {
-			linux,reserve-contiguous-region;
-			linux,reserve-region;
-			linux,remove-completely;
-			reg = <0x7b00000 0x500000>;
-			label = "tz_apps";
-
-		};
-
-		modem_mem: modem_region@0x8000000 {
-			linux,reserve-contiguous-region;
-			linux,reserve-region;
-			linux,remove-completely;
-			reg = <0x8000000 0x5200000>;
-			label = "modem_mem";
-
-		};
-        };
-};
-
-&peripheral_mem {
-	status = "disabled";
-};
-
 &soc {
 	android_usb@fe8050c8 {
 		compatible = "qcom,android-usb";
@@ -1703,6 +1667,7 @@
 	qcom,mdss-has-bwc;
 	qcom,mdss-has-decimation;
 	qcom,mdss-ad-off = <0x0013100 0x00013300>;
+	vdd-cx-supply = <&pm8841_s2_corner>;
 };
 
 &mdss_hdmi_tx {
@@ -1758,7 +1723,7 @@
 		<3240000 1600000>,
 		<4048000 1600000>,
 		<4264000 1600000>;
-	qcom,max-hw-load = <1281600>; /* max(4k X 2304 @ 24, 4k X 2160 @ 30) + 1080p @ 30 */
+	qcom,max-hw-load = <1216800>; /* 3840 X 2160 @ 30 fps + 1920 X 1088 @ 30 fps */
 	qcom,buffer-type-tz-usage-table = <0x241 0x1>,
 					<0x106 0x2>,
 					<0x480 0x3>;
@@ -1781,6 +1746,11 @@
 			qcom,vidc-partition-buffer-types = <0x480>;
 		};
 	};
+};
+
+&memory_hole {
+	qcom,memblock-remove = <0x05a00000 0x7800000
+				0x0fa00000 0x500000>; /* Address and size of the hole */
 };
 
 &gdsc_venus {

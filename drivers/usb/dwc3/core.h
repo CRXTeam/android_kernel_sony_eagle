@@ -138,6 +138,7 @@
 #define DWC3_GEVNTCOUNT(n)	(0xc40c + (n * 0x10))
 
 #define DWC3_GHWPARAMS8		0xc600
+#define DWC3_GFLADJ		0xc630
 
 /* Device Registers */
 #define DWC3_DCFG		0xc700
@@ -218,6 +219,12 @@
 
 /* Global HWPARAMS6 Register */
 #define DWC3_GHWPARAMS6_SRP_SUPPORT	(1 << 10)
+
+/* Global Frame Length Adjustment Register */
+#define DWC3_GFLADJ_REFCLK_240MHZDECR_PLS1	(1 << 31)
+#define DWC3_GFLADJ_REFCLK_240MHZ_DECR		(0x7F << 24)
+#define DWC3_GFLADJ_REFCLK_LPM_SEL		(1 << 23)
+#define DWC3_GFLADJ_REFCLK_FLADJ		(0x3FFF << 8)
 
 /* Device Configuration Register */
 #define DWC3_DCFG_LPM_CAP	(1 << 22)
@@ -743,6 +750,7 @@ struct dwc3 {
 #define DWC3_REVISION_210A	0x5533210a
 #define DWC3_REVISION_220A	0x5533220a
 #define DWC3_REVISION_230A	0x5533230a
+#define DWC3_REVISION_250A	0x5533250a
 
 	unsigned		is_selfpowered:1;
 	unsigned		three_stage_setup:1;
@@ -791,8 +799,8 @@ struct dwc3 {
 
 struct dwc3_event_type {
 	u32	is_devspec:1;
-	u32	type:7;
-	u32	reserved8_31:24;
+	u32	type:6;
+	u32	reserved8_31:25;
 } __packed;
 
 #define DWC3_DEPEVT_XFERCOMPLETE	0x01
@@ -868,15 +876,15 @@ struct dwc3_event_depevt {
  *	12	- VndrDevTstRcved
  * @reserved15_12: Reserved, not used
  * @event_info: Information about this event
- * @reserved31_25: Reserved, not used
+ * @reserved31_24: Reserved, not used
  */
 struct dwc3_event_devt {
 	u32	one_bit:1;
 	u32	device_event:7;
 	u32	type:4;
 	u32	reserved15_12:4;
-	u32	event_info:9;
-	u32	reserved31_25:7;
+	u32	event_info:8;
+	u32	reserved31_24:8;
 } __packed;
 
 /**
